@@ -94,6 +94,16 @@ int games(int start_selection){
                     printf("enter the position (x,y) of your guess.. !!!\n");
                     guess_again_mines:scanf("%d%d",&accept_gridkey1,&accept_gridkey2);
                     if(grid[2][3]==grid[accept_gridkey1][accept_gridkey2]){
+                        //to update the correct mine 
+                        for (size_t i = 0; i < 4; i++)
+                        {
+                            for (size_t j = 0; j < 4; j++)
+                            {
+                                printf("%c\t",grid[i][j]);
+                            }
+                            printf("\n");
+                            
+                        }
                         printf("awesome !! you found the correct one...\n ");
                         printf("press '1' to play again or '0' to exit..\n");
                         scanf("%d",&user_playagain2);
@@ -192,12 +202,12 @@ int main(){
     char exit_selection;
     while (1)
     {
-        main_menu : printf("\tMAIN MENU\nSELECT AN OPTION\n");//main menu screen
+        main_menu : printf("\t\tMAIN MENU\nSELECT AN OPTION\n");//main menu screen
         printf("1.START\n2.OPTIONS\n3.HELP\n0.EXIT\n");
         scanf("%d",&selection);
         switch(selection){
             //start selection
-            case 1: start_menu: printf("\tENTER YOUR SELECTION\n1.GUESS THE LUCKY NUMBER\n2.FIND THE MINES IN THE GRID\n3.TIC-TAC-TOE\n0.EXIT\n");
+            case 1: start_menu: printf("\t\tENTER YOUR SELECTION\n1.GUESS THE LUCKY NUMBER\n2.FIND THE MINES IN THE GRID\n3.TIC-TAC-TOE\n0.EXIT\n");
                     scanf("%d",&start_selection);
                     if(start_selection==0){
                         printf("going back to main menu\n");
