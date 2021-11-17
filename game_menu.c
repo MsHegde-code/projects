@@ -2,11 +2,14 @@
 #include<stdlib.h>
 //functions
 int games(int start_selection){
+    //declaration for game 2
+    int grid_key,accept_gridkey1,accept_gridkey2,user_playagain2,j,playagain_var=0,user_playagain3;
+    char grid[5][5];
     //game menu code
     while(1){
         switch(start_selection){
             case 1: playagain_1 : printf("GUESS THE LUCKY NUMBER\n");
-                    int game_1[10]={1,2,3,4,5,6,7,8,9,10},i,life_count=2;
+                    int game_1[10]={1,2,3,4,5,6,7,8,9,10},i,life_count=3;
                     for ( i = 0; i < 10; i++)
                     {
                         printf("%d\t",game_1[i]);
@@ -36,7 +39,8 @@ int games(int start_selection){
                         {
                         for(;life_count>=0;){
                         printf("oops...Wrong guess!!\nguess again..\n");
-                        printf("%d life remaining..\n",life_count);
+                        printf("%d life remaining..\n",life_count-1);
+                            life_count--;
                             if(life_count==0){
                                 printf("Out of lives!!..better luck next time..\n");
                                 printf("press '1' to play again or '0' to go back\n");
@@ -56,14 +60,86 @@ int games(int start_selection){
                                 }
                                 
                             }
-                        life_count--;
+                        
                         goto guess_again;
 
                         }//for loop
                     }//else
                     break;
-            case 2: printf("welcome to find the mines in the grid..\n");
-
+            case 2: 
+                    playagain_3:printf("'find the mines in the grid..'\n");
+                    int life_count_mines=3;
+                    if(playagain_var==1){
+                        printf("playing again..\tATB..\n");
+                    }
+                    //grid printing
+                    for (i = 0; i < 4; i++)
+                    {
+                        for (j = 0; j < 4; j++)
+                        {
+                            grid[i][j]='x';
+                        }
+                    }
+                    for (size_t i = 0; i < 4; i++)
+                    {
+                        for (size_t j = 0; j < 4; j++)
+                        {
+                            printf("%c\t",grid[i][j]);
+                        }
+                        printf("\n");
+                        
+                    }
+                    //grid key 
+                    grid[2][3]='o';
+                    printf("enter the position (x,y) of your guess.. !!!\n");
+                    guess_again_mines:scanf("%d%d",&accept_gridkey1,&accept_gridkey2);
+                    if(grid[2][3]==grid[accept_gridkey1][accept_gridkey2]){
+                        printf("awesome !! you found the correct one...\n ");
+                        printf("press '1' to play again or '0' to exit..\n");
+                        scanf("%d",&user_playagain2);
+                        if(user_playagain2==1){
+                            printf("play again..\n");
+                            playagain_var=1;
+                            goto playagain_3;
+                        }
+                        else if(user_playagain2==0){
+                            printf("going back to game menu\n");
+                            return 3;
+                        }
+                        else{
+                            printf("default : play again..\n");
+                            playagain_var=1;
+                            goto playagain_3;
+                        }
+                    }
+                    else {
+                        for (size_t i = 0; i < 2; i++)
+                        {
+                            printf("wrong guess..\n%d life remaining..guess again...\n",life_count_mines-1);
+                            life_count_mines--;
+                            if(life_count_mines==0){
+                                printf("out of lives...Better luck next time\nto play again press '1' or to  go back press '0'\n");
+                                scanf("%d",&user_playagain3);
+                                if(user_playagain3==1){
+                                    printf("play again..\n");
+                                    goto playagain_3;
+                                }
+                                else if(user_playagain3==0){
+                                    printf("going back to start menu...\n");
+                                    return 4;
+                                }
+                                else{
+                                    printf("default: play again..\n");
+                                    goto playagain_3;
+                                }
+                            }
+                            goto guess_again_mines;
+                        }
+                        
+                    }
+                    break;
+            case 3: printf("TIC TAC TOE GAME\n");
+            //game code
 
             }//switch_block
         }
@@ -73,7 +149,7 @@ int help_menu(){
     //help menu
     printf("HELP MENU\n");
     int help_selection,exit_back;
-    help_menu1 : printf("ENTER THE SELECTION\n1.help for the game 'guess the lucky number'\n2.help for the game 'search the mines'\n3.help for the game crossword puzzle\n0.exit to main menu");
+    help_menu1 : printf("ENTER THE SELECTION\n1.help - 'guess the lucky number'\n2.help - 'search the mines'\n3.help - 'tic tac toe'\n0.exit to main menu");
     scanf("%d",&help_selection);
     while(1){
         switch(help_selection){
@@ -91,7 +167,7 @@ int help_menu(){
                     }
                     break;
             case 2: printf("guess the mines in the grid..\n");
-                    printf("here, you need to guess the mines hidden inside the grid, by guessing the position of the mines..\nthe position starts from '0', and goes on row wise..you will be having 3 lives to guess the mines from the grid\nthe mines to be searched depends the grid number..i.e for a\n1.'2x2' grid '1'mine\n2. 3x3 grid 2 mines\n3. 4x4 grid 4 mines and so on\nTry your luck !!!\n");
+                    printf("here, you need to guess the mines hidden inside the grid, by guessing the position (row,column) of the mines..\nthe position starts from (0,0) and goes on...\nyou will be having 3 lives to guess the mines from the grid\nTry your luck !!!\n");
                     printf("to go back press '0'\n");
                     scanf("%d",&exit_back);
                     if (exit_back==0)
@@ -121,7 +197,7 @@ int main(){
         scanf("%d",&selection);
         switch(selection){
             //start selection
-            case 1: start_menu: printf("\tENTER YOUR SELECTION\n1.GUESS THE LUCKY NUMBER\n2.FIND THE MINES IN THE GRID\n3.CROSSWORD PUZZLE\n0.EXIT\n");
+            case 1: start_menu: printf("\tENTER YOUR SELECTION\n1.GUESS THE LUCKY NUMBER\n2.FIND THE MINES IN THE GRID\n3.TIC-TAC-TOE\n0.EXIT\n");
                     scanf("%d",&start_selection);
                     if(start_selection==0){
                         printf("going back to main menu\n");
