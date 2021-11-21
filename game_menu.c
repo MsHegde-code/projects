@@ -1,12 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 //functions
 int games(int start_selection){
     //declaration for game 2
     int grid_key,accept_gridkey1,accept_gridkey2,user_playagain2,j,playagain_var=0,user_playagain3;
     char grid[5][5];
+    //declaration for game 3
+    char player_selection_game3;
     //game menu code
-    while(1){
         switch(start_selection){
             case 1: playagain_1 : printf("GUESS THE LUCKY NUMBER\n");
                     int game_1[10]={1,2,3,4,5,6,7,8,9,10},i,life_count=3;
@@ -148,13 +150,45 @@ int games(int start_selection){
                         
                     }
                     break;
-            case 3: printf("TIC TAC TOE GAME\n");
+            case 3:game3: printf("TIC TAC TOE GAME\n");
             //game code
-
+            char assign_player1,assign_player2,tictactoe[5][5];
+            printf("player 1 to choose sides...to choose 'O' , press 'O' .. OR to choose 'X' , press 'X'... :)\n");
+            scanf("%s",&player_selection_game3);
+            if(player_selection_game3=='o' || player_selection_game3=='X'){
+                assign_player1='O';
+                assign_player2='X';
+                printf("player 1 will play with 'O' and player 2 will play with 'X'\n");
+            }
+            else if(player_selection_game3=='x'|| player_selection_game3=='X'){
+                assign_player1='X';
+                assign_player2='Y';
+                printf("player 1 will play with 'X' and player 2 will play with 'O'\n");
+            }
+            else{
+                printf("invalid input..\n");
+                //goto game3;
+            }
+            for ( i = 0; i < 3; i++)
+                {
+                    for ( j = 0; j < 3; j++)
+                        {
+                            if(j*2==j/2){
+                            tictactoe[i][j]=' ';
+                            printf("%c\t",tictactoe[i][j]);
+                            }
+                            else{
+                            tictactoe[i][j]='|';
+                            printf("%c\t",tictactoe[i][j]);
+                            }
+                        }               
+                printf("\n");
+                }
+                //accept user input
+            break;
+            //next case
             }//switch_block
         }
-    }
-
 int help_menu(){
     //help menu
     printf("HELP MENU\n");
@@ -198,7 +232,7 @@ int help_menu(){
     }
 }
 int main(){
-    int menu_loop,selection,start_selection,option_selection,sound_selection,assign_sound;
+    int menu_loop,selection,start_selection,option_selection,sound_selection,assign_sound=0,assign_music=0,music_selection;
     char exit_selection;
     while (1)
     {
@@ -229,7 +263,7 @@ int main(){
                     scanf("%d",&option_selection);
                     if(option_selection==1){
                         //sound menu
-                        sound_menu : printf("select an option\n1.enable sound\n2.disable sound\n3.Back\n");
+                        sound_menu : printf("select an option\n1.enable sound\n2.disable sound\n3.Go Back\n");
                         scanf("%d",&sound_selection);
                         if(sound_selection==1){
                             if(assign_sound==1){
@@ -254,6 +288,42 @@ int main(){
                             goto option_menu;
                         }
                     
+                    }
+                    else if(option_selection==2){
+                        music_menu:printf("MUSIC\n1. press '1' to enable music\n2.press '2' to disable music\n3. press '0' to go back\n");
+                        scanf("%d",&music_selection);
+                        if(music_selection==1){
+                            if(assign_music==1){
+                            printf("music is already on...raise the volume..\n");
+                            goto music_menu;
+                        }
+                        printf("music is turned on..\n");
+                        assign_music=1;
+                        }
+                        else if(music_selection==2){
+                            if(assign_music==2){
+                                printf("music already disabled..\n");
+                                goto music_menu;
+                            }
+                            printf("music is disabled..\n");
+                            assign_music=2;
+                        }
+                        else if(music_selection==0){
+                            printf("going back..\n");
+                            goto option_menu;
+                        }
+                        else{
+                            printf("invalid input\n");
+                            goto music_menu;
+                        }
+                    }
+                    else if(option_selection==3){
+                        printf("going back..\n");
+                        goto main_menu;
+                    }
+                    else{
+                        printf("invalid input..\n");
+                        goto option_menu;
                     }
                     break;
             case 3: printf("HELP..\n");
