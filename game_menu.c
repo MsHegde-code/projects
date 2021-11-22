@@ -1,7 +1,19 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+int i,j;char tictactoe[5][5];
 //functions
+//tic tac toe function
+void print_updated_grid_ttt(){
+    for ( i = 0; i < 3; i++)
+                {
+                    for ( j = 0; j < 5; j++)
+                        {
+                            printf("%c\t",tictactoe[i][j]);   
+                        }               
+                printf("\n");
+                }
+}
 int games(int start_selection){
     //declaration for game 2
     int grid_key,accept_gridkey1,accept_gridkey2,user_playagain2,j,playagain_var=0,user_playagain3;
@@ -152,7 +164,7 @@ int games(int start_selection){
                     break;
             case 3:game3: printf("TIC TAC TOE GAME\n");
             //game code
-            char assign_player1,assign_player2,tictactoe[5][5];
+            char assign_player1,assign_player2;
             printf("player 1 to choose sides...to choose 'O' , press 'O' .. OR to choose 'X' , press 'X'... :)\n");
             scanf("%s",&player_selection_game3);
             if(player_selection_game3=='o' || player_selection_game3=='X'){
@@ -162,7 +174,7 @@ int games(int start_selection){
             }
             else if(player_selection_game3=='x'|| player_selection_game3=='X'){
                 assign_player1='X';
-                assign_player2='Y';
+                assign_player2='O';
                 printf("player 1 will play with 'X' and player 2 will play with 'O'\n");
             }
             else{
@@ -171,20 +183,94 @@ int games(int start_selection){
             }
             for ( i = 0; i < 3; i++)
                 {
-                    for ( j = 0; j < 3; j++)
+                    for ( j = 0; j < 5; j++)
                         {
-                            if(j*2==j/2){
+                            if(j%2==0){
                             tictactoe[i][j]=' ';
                             printf("%c\t",tictactoe[i][j]);
                             }
                             else{
                             tictactoe[i][j]='|';
-                            printf("%c\t",tictactoe[i][j]);
+                            printf("%c",tictactoe[i][j]);
                             }
                         }               
                 printf("\n");
                 }
                 //accept user input
+                int player1_position_ttt,player2_position_ttt;
+                //you need to block the reserved position i.e the grid
+                while(1){
+                    player1_input_ttt:printf("player 1 : enter the position (1-9)\n");
+                    scanf("%d",&player1_position_ttt);
+                    switch(player1_position_ttt){
+                        case 1: tictactoe[0][0]=assign_player1;
+                                print_updated_grid_ttt();
+                                break;
+                        case 2: tictactoe[0][2]=assign_player1;
+                                print_updated_grid_ttt();
+                                break;
+                        case 3: tictactoe[0][4]=assign_player1;
+                                print_updated_grid_ttt();
+                                break;
+                        case 4: tictactoe[1][0]=assign_player1;
+                                print_updated_grid_ttt();
+                                break;
+                        case 5: tictactoe[1][2]=assign_player1;
+                                print_updated_grid_ttt();
+                                break;
+                        case 6: tictactoe[1][4]=assign_player1;
+                                print_updated_grid_ttt();
+                                break;
+                        case 7: tictactoe[2][0]=assign_player1;
+                                print_updated_grid_ttt();
+                                break;
+                        case 8: tictactoe[2][2]=assign_player1;
+                                print_updated_grid_ttt();
+                                break;
+                        case 9: tictactoe[2][4]=assign_player1;
+                                print_updated_grid_ttt();
+                                break;
+                        default: printf("invalid input\n");
+                                 goto player1_input_ttt;
+                                 break;
+                    }
+                    player2_input_ttt:printf("player 2: enter the position(1-9)\n");
+                    scanf("%d",&player2_position_ttt);
+                    switch(player2_position_ttt){
+                        case 1: tictactoe[0][0]=assign_player2;
+                                print_updated_grid_ttt();
+                                break;
+                        case 2: tictactoe[0][2]=assign_player2;
+                                print_updated_grid_ttt();
+                                break;
+                        case 3: tictactoe[0][4]=assign_player2;
+                                print_updated_grid_ttt();
+                                break;
+                        case 4: tictactoe[1][0]=assign_player2;
+                                print_updated_grid_ttt();
+                                break;
+                        case 5: tictactoe[1][2]=assign_player2;
+                                print_updated_grid_ttt();
+                                break;
+                        case 6: tictactoe[1][4]=assign_player2;
+                                print_updated_grid_ttt();
+                                break;
+                        case 7: tictactoe[2][0]=assign_player2;
+                                print_updated_grid_ttt();
+                                break;
+                        case 8: tictactoe[2][2]=assign_player2;
+                                print_updated_grid_ttt();
+                                break;
+                        case 9: tictactoe[2][4]=assign_player2;
+                                print_updated_grid_ttt();
+                                break;
+                        default: printf("invalid input\n");
+                                 goto player2_input_ttt;
+                                 break;
+                    }
+
+                }//input while ttt
+
             break;
             //next case
             }//switch_block
