@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 int i,j,return_check;char tictactoe[5][5];
-//functions
+
 //tic tac toe function
 void print_updated_grid_ttt(){
     for ( i = 0; i < 3; i++)
@@ -296,14 +296,17 @@ int games(int start_selection){
                         scanf("%d",&playagain_ttt);
                         if(playagain_ttt==1){
                             printf("play again..\n");
+                            return_check=-1;
                             goto game3;
                         }
                         else if(playagain_ttt==0){
                             printf("going back to game menu\n");
+                            return_check=-1;
                             return 1;//main function
                         }
                         else{
                             printf("default:play again\n");
+                            return_check=-1;
                             goto game3;
                         }
                     }
@@ -313,14 +316,17 @@ int games(int start_selection){
                         scanf("%d",&playagain_ttt);
                         if(playagain_ttt==1){
                             printf("play again..\n");
+                            return_check=-1;
                             goto game3;
                         }
                         else if(playagain_ttt==0){
                             printf("going back to game menu\n");
+                            return_check=-1;
                             return 1;//main function
                         }
                         else{
                             printf("default:play again\n");
+                            return_check=-1;
                             goto game3;
                         }
                     }
@@ -364,14 +370,17 @@ int games(int start_selection){
                         scanf("%d",&playagain_ttt);
                         if(playagain_ttt==1){
                             printf("play again..\n");
+                            return_check=-1;
                             goto game3;
                         }
                         else if(playagain_ttt==0){
                             printf("going back to game menu\n");
+                            return_check=-1;
                             return 1;//main function
                         }
                         else{
                             printf("default:play again\n");
+                            return_check=-1;
                             goto game3;
                         }
                     }
@@ -381,14 +390,17 @@ int games(int start_selection){
                         scanf("%d",&playagain_ttt);
                         if(playagain_ttt==1){
                             printf("play again..\n");
+                            return_check=-1;
                             goto game3;
                         }
                         else if(playagain_ttt==0){
                             printf("going back to game menu\n");
+                            return_check=-1;
                             return 1;//main function
                         }
                         else{
                             printf("default:play again\n");
+                            return_check=-1;
                             goto game3;
                         }
                     }
