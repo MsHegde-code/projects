@@ -70,71 +70,13 @@ int input_compare_ttt_O(){//to check 'O';return2;
 }
 int games(int start_selection){
     //declaration for game 2
-    int grid_key,accept_gridkey1,accept_gridkey2,user_playagain2,j,playagain_var=0,user_playagain3;
+    int accept_gridkey1,accept_gridkey2,user_playagain2,j,playagain_var=0,user_playagain3;
     char grid[5][5];
     //declaration for game 3
     char player_selection_game3;
     //game menu code
         switch(start_selection){
-            case 1: playagain_1 : printf("GUESS THE LUCKY NUMBER\n");
-                    int game_1[10]={1,2,3,4,5,6,7,8,9,10},i,life_count=3;
-                    for ( i = 0; i < 10; i++)
-                    {
-                        printf("%d\t",game_1[i]);
-                    }
-                    printf("\n");
-                    int lucky_number=game_1[6],guess_number,user_choice,guess_again1;
-                    guess_again : scanf("%d",&guess_number);
-                    if(guess_number==lucky_number){
-                        printf("Superb...you guessed it right\n");
-                        printf("to play again press '1' OR to exit to game menu press '0'\n");
-                        scanf("%d",&user_choice);
-                        if(user_choice==1){
-                            printf("play again...\n");
-                            goto playagain_1;
-                        }
-                        else if(user_choice==0){
-                            printf("going back to game menu\n");
-                            return 1;//start menu return
-                        }
-                        else{
-                            printf("default : play again\n");
-                            goto playagain_1;
-                        }
-                    }
-                    //outer else block
-                    else
-                        {
-                        for(;life_count>=0;){
-                        printf("oops...Wrong guess!!\nguess again..\n");
-                        printf("%d life remaining..\n",life_count-1);
-                            life_count--;
-                            if(life_count==0){
-                                printf("Out of lives!!..better luck next time..\n");
-                                printf("press '1' to play again or '0' to go back\n");
-                                scanf("%d",&guess_again1);
-                                if (guess_again1==1)
-                                {
-                                    printf("play again\n");
-                                    goto playagain_1;
-                                }
-                                else if(guess_again1==0){
-                                    printf("going back..\n");
-                                    return 1;
-                                }
-                                else{
-                                    printf("default : play again..\n");
-                                    goto playagain_1;
-                                }
-                                
-                            }
-                        
-                        goto guess_again;
-
-                        }//for loop
-                    }//else
-                    break;
-            case 2: 
+                    case 1: 
                     playagain_3:printf("'find the mines in the grid..'\n");
                     int life_count_mines=3;
                     if(playagain_var==1){
@@ -216,7 +158,7 @@ int games(int start_selection){
                         
                     }
                     break;
-            case 3:game3: printf("TIC TAC TOE GAME\n");
+            case 2:game3: printf("TIC TAC TOE GAME\n");
             //game code
             char assign_player1,assign_player2;int playagain_ttt;
             printf("player 1 to choose sides...to choose 'O' , press 'O' .. OR to choose 'X' , press 'X'... :)\n");
@@ -414,24 +356,11 @@ int help_menu(){
     //help menu
     printf("HELP MENU\n");
     int help_selection,exit_back;
-    help_menu1 : printf("ENTER THE SELECTION\n1.help - 'guess the lucky number'\n2.help - 'search the mines'\n3.help - 'tic tac toe'\n0.exit to main menu");
+    help_menu1 : printf("ENTER THE SELECTION\n1.help - 'search the mines'\n2.help - 'tic tac toe'\n0.exit to main menu");
     scanf("%d",&help_selection);
     while(1){
         switch(help_selection){
-            case 1: printf("guess the lucky number\n");
-                    printf("Here, you need to guess the lucky number from the give set of numbers, the selection should be from\n 1 to 10 numbers..you will be having 2 lives to complete the game..\nALL THE BEST FOR YOUR LUCK\n...");
-                    printf("press '0' to go back\n");
-                    scanf("%d",&exit_back);
-                    if(exit_back==0){
-                        printf("exiting...\n");
-                        goto help_menu1;
-                    }
-                    else{
-                        printf("default : going back\n");
-                        goto help_menu1;
-                    }
-                    break;
-            case 2: printf("guess the mines in the grid..\n");
+            case 1: printf("guess the mines in the grid..\n");
                     printf("here, you need to guess the mines hidden inside the grid, by guessing the position (row,column) of the mines..\nthe position starts from (0,0) and goes on...\nyou will be having 3 lives to guess the mines from the grid\nTry your luck !!!\n");
                     printf("to go back press '0'\n");
                     scanf("%d",&exit_back);
@@ -462,7 +391,7 @@ int main(){
         scanf("%d",&selection);
         switch(selection){
             //start selection
-            case 1: start_menu: printf("\t\tENTER YOUR SELECTION\n1.GUESS THE LUCKY NUMBER\n2.FIND THE MINES IN THE GRID\n3.TIC-TAC-TOE\n0.EXIT\n");
+            case 1: start_menu: printf("\t\tENTER YOUR SELECTION\n1.FIND THE MINES IN THE GRID\n2.TIC-TAC-TOE\n0.EXIT\n");
                     scanf("%d",&start_selection);
                     if(start_selection==0){
                         printf("going back to main menu\n");
