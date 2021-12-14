@@ -4,7 +4,6 @@
 #include"guess_the_mines.h"
 #include"tic_tac_toe.h"
 int games(int start_selection){
-    
         switch(start_selection){
             case 1: 
                 guess_the_mines();

@@ -6,7 +6,7 @@ void print_updated_grid_ttt(){
                 {
                     for ( j = 0; j < 5; j++)
                         {
-                            printf("%c\t",tictactoe[i][j]);   
+                            printf("%c",tictactoe[i][j]);   
                         }               
                 printf("\n");
                 }
@@ -90,7 +90,7 @@ int input_compare_ttt_O(){//to check 'O';return2;
                         {
                             if(j%2==0){
                             tictactoe[i][j]=' ';
-                            printf("%c\t",tictactoe[i][j]);
+                            printf("%c",tictactoe[i][j]);
                             }
                             else{
                             tictactoe[i][j]='|';
