@@ -8,7 +8,6 @@ typedef struct movies{
 }node;
 node *start=NULL,*head;
 node* create(){
-    //only storing data
     node *new;
     new=(node*)malloc(sizeof(node));
     new->next=new;
@@ -42,8 +41,7 @@ void display_menu(){
 }
 node* book_ticket(node *new){
     int ch,user_ddt;
-    printf("\n|\tavaliable movies\t|\n");
-    display_movie:printf("|\t1.KGF CHAPTER 2\n|\t2.BAHUBALLI REBORN\n|\t3.SPIDER MAN : AT HOME\n|\t4.***COMING SOON ***\nwaiting for your choice :)  .....\t");
+    display_movie:printf("\n|\tavaliable movies\t|\n|\t1.KGF CHAPTER 2\n|\t2.BAHUBALLI REBORN\n|\t3.SPIDER MAN : AT HOME\n|\t4.***COMING SOON ***\nwaiting for your choice :)  .....\t");
     scanf("%d",&ch);
     printf("|date & day|\t|time|\t|theatre|\n");
     switch(ch){
@@ -53,15 +51,11 @@ node* book_ticket(node *new){
                 scanf("%d",&user_ddt);
                 //movie="KGF CHAPTER 2"
                 switch(user_ddt){
-                    case 1: //date=12;day="wednesday";time=2.40;theatre="vega city mall";
-                            strcpy(new->movie_name,"KGF CHAPTER 2");    new->date=12;   strcpy(new->day,"wednesday");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL");
-                            //insert_rear(new);
+                    case 1: strcpy(new->movie_name,"KGF CHAPTER 2");    new->date=12;   strcpy(new->day,"wednesday");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL"); 
                             break;
                     case 2: strcpy(new->movie_name,"KGF CHAPTER 2");    new->date=14;   strcpy(new->day,"friday");   new->time=9.00; strcpy(new->place,"ORION MALL");
-                           // insert_rear(new);
                             break;
                     case 3: strcpy(new->movie_name,"KGF CHAPTER 2");    new->date=16;   strcpy(new->day,"sunday");   new->time=5.45; strcpy(new->place,"ROYAL MALL");
-                           // insert_rear(new);
                             break;
                     default:printf("\ninvalid input\n");
                             goto ddt_sel1;
@@ -72,15 +66,11 @@ node* book_ticket(node *new){
                 scanf("%d",&user_ddt);
                 //movie="BAHUBALLI REBORN"
                 switch(user_ddt){
-                    case 1: //date=12;day="wednesday";time=2.40;theatre="vega city mall";
-                            strcpy(new->movie_name,"BAHUBALLI REBORN");    new->date=11;   strcpy(new->day,"TUESDAY");   new->time=8.40; strcpy(new->place,"VEGA CITY MALL");
-                           // insert_rear(new);
+                    case 1: strcpy(new->movie_name,"BAHUBALLI REBORN");    new->date=11;   strcpy(new->day,"TUESDAY");   new->time=8.40; strcpy(new->place,"VEGA CITY MALL");
                             break;
-                    case 2: strcpy(new->movie_name,"BAHUBALLI REBORN");    new->date=13;   strcpy(new->day,"THURSDAY");   new->time=3.00; strcpy(new->place,"ORION MALL");
-                           // insert_rear(new);
+                    case 2: strcpy(new->movie_name,"BAHUBALLI REBORN");    new->date=13;   strcpy(new->day,"THURSDAY");   new->time=3.00; strcpy(new->place,"ORION MALL"); 
                             break;
                     case 3: strcpy(new->movie_name,"BAHUBALLI REBORN");    new->date=15;   strcpy(new->day,"SATURDAY");   new->time=6.45; strcpy(new->place,"ROYAL MALL");
-                           // insert_rear(new);
                             break;
                     default:printf("\ninvalid input\n");
                             goto ddt_sel2;
@@ -91,15 +81,11 @@ node* book_ticket(node *new){
                 scanf("%d",&user_ddt);
                 //movie="SPIDER MAN : AT HOME"
                 switch(user_ddt){
-                    case 1: //date=12;day="wednesday";time=2.40;theatre="vega city mall";
-                            strcpy(new->movie_name,"SPIDER MAN : AT HOME");    new->date=17;   strcpy(new->day,"MONDAY");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL");
-                           // insert_rear(new);
+                    case 1: strcpy(new->movie_name,"SPIDER MAN : AT HOME");    new->date=17;   strcpy(new->day,"MONDAY");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL");
                             break;
                     case 2: strcpy(new->movie_name,"SPIDER MAN : AT HOME");    new->date=19;   strcpy(new->day,"WEDNESDAY");   new->time=2.40; strcpy(new->place,"ORION MALL");
-                           // insert_rear(new);
                             break;
                     case 3: strcpy(new->movie_name,"SPIDER MAN : AT HOME");    new->date=20;   strcpy(new->day,"FRIDAY");   new->time=2.40; strcpy(new->place,"ROYAL MALL");
-                           // insert_rear(new);
                             break;
                     default:printf("\ninvalid input\n");
                             goto ddt_sel3;
@@ -110,6 +96,9 @@ node* book_ticket(node *new){
     }
     return new;
 }
+void checkout(){
+
+}
 void edit_ticket(){}
 void cancel_ticket(){}
 void display_ticket(){}
@@ -117,8 +106,7 @@ int main(){
     int ch;node *new;
     while(1){
         printf("\n\t|\tMOVIE TICKET BOOKING SYSTEM\t|\n");
-        display_menu();//displays the avaliable movies 
-        //in "display" function, display the option to be typed 
+        display_menu(); 
         printf("waiting for your choice.....\t");
         scanf("%d",&ch);
         switch(ch){
@@ -126,6 +114,7 @@ int main(){
             case 1: new=create();
                     new=book_ticket(new);
                     insert_rear(new);
+                    checkout(new);
                     break;
             case 2: edit_ticket();
                     break;
@@ -136,6 +125,6 @@ int main(){
             default:    printf("exiting...\n");
                         exit(0);
         }
-    }//while
+    }
     return 0;
 }
