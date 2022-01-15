@@ -2,8 +2,9 @@
 #include<stdlib.h>
 #include<string.h>
 typedef struct movies{
-    char movie_name[20],day[10],place[20];
-    int date,time,total;
+    char movie_name[20],day[10],place[20],name[20];
+    int date,time,total,phone,seats;
+    float bill;
     struct movies *next,*prev;
 }node;
 node *start=NULL,*head;
@@ -24,11 +25,11 @@ void insert_rear(node *new){
         return;
     }
     if(start->next==head){
-        start->next=new;    new->prev=start;    new->next=head;     head->prev=new;
+        start->next=new;    new->prev=start;    new->next=head;     head->prev=new;     (head->total)++;
         return;
     }
     while(temp->next!=head)     temp=temp->next;
-    temp->next=new;     new->prev=temp;     new->next=head;     head->prev=temp;
+    temp->next=new;     new->prev=temp;     new->next=head;     head->prev=temp;        (head->total)++;
     return;
 }
 void display_menu(){
@@ -96,8 +97,21 @@ node* book_ticket(node *new){
     }
     return new;
 }
-void checkout(){
-
+node* checkout(node *new){
+        char ch;
+        form:printf("\nENTER CUSTOMER INFORMATION\nNAME : \t");
+        scanf("%s",new->name);
+        printf("\nENTER THE PHONE NUMBER : \t");
+        scanf("%d",&new->phone);
+        printf("\nCOST PER SEAT : RS.230 (INCL GST)\nHOW MANY SEATS?? : \t");
+        scanf("%d",&new->seats);
+        new->bill=0;
+        new->bill=(new->seats)*230;
+        printf("AMOUNT TO BE PAID : %.3f\n",new->bill);
+        printf("TO CONFIRM PRESS (Y)ES OR (N)O TO GO BACK TO FILL AGAIN\n");
+        scanf("\n%c",&ch);
+        if(ch=='Y'||ch=='y')            return new;
+        else    goto form;
 }
 void edit_ticket(){}
 void cancel_ticket(){}
@@ -113,8 +127,8 @@ int main(){
             //when user hits back, use goto function and jump to display menu
             case 1: new=create();
                     new=book_ticket(new);
+                    new=checkout(new);
                     insert_rear(new);
-                    checkout(new);
                     break;
             case 2: edit_ticket();
                     break;
