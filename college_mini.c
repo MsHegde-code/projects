@@ -7,9 +7,7 @@ typedef struct movies{
     float bill;
     struct movies *next,*prev;
 }node;
-int ava_seat[3][3];
-//updating the available seats
-
+int ava_seat[3][3];//updating the available seats
 node *start=NULL,*head;
 node* create(){
     node *new;
@@ -47,8 +45,7 @@ node* book_ticket(node *new){
     scanf("%d",&new->mov_sel);
     printf("|date & day|\t|time|\t|theatre|\t|available seats|\n");
     switch(new->mov_sel){
-        case 1: 
-                ddt_sel1:printf("1.12th wed\t2:40pm\tvega city mall\t%d\n2.14th fri\t9:00pm\torion mall\t%d\n3.16th sun\t5:45pm\troyal mall\t%d\n",ava_seat[1][1],ava_seat[1][2],ava_seat[1][3]);
+        case 1: ddt_sel1:printf("1.12th wed\t2:40pm\tvega city mall\t%d\n2.14th fri\t9:00pm\torion mall\t%d\n3.16th sun\t5:45pm\troyal mall\t%d\n",ava_seat[1][1],ava_seat[1][2],ava_seat[1][3]);
                 printf("waiting for your choice :) ....\t");
                 scanf("%d",&new->user_ddt);
                 //movie="KGF CHAPTER 2"
@@ -96,7 +93,6 @@ node* book_ticket(node *new){
         default: printf("\ninvalid input\n");
                     goto display_movie;
     }
-
     return new;
 }
 node* checkout(node *new){
