@@ -3,11 +3,11 @@
 #include<string.h>
 typedef struct movies{
     char movie_name[20],day[10],place[20],name[20];
-    int date,time,total,phone,bookseats,mov_sel,user_ddt;
-    float bill;
+    int date,total,phone,bookseats,mov_sel,user_ddt,ticket_id;
+    float bill,time;
     struct movies *next,*prev;
 }node;
-int ava_seat[3][3];//updating the available seats
+int ava_seat[3][3],id;//updating the available seats
 node *start=NULL,*head;
 node* create(){
     node *new;
@@ -116,8 +116,41 @@ node* checkout(node *new){
 }
 void edit_ticket(){}
 void cancel_ticket(){}
-void display_ticket(){}
+void display_ticket(node *new){
+        node *temp=start;int ticket,pass;
+        display:printf("\n|\tDisplay Ticket\t|\n1.View all Tickets\n2.View Indivisual tickets\n3.Exit\n");
+        scanf("%d",&ticket);
+        if(start==0){
+                printf("NO TICKETS BOOKED\n");
+                return;
+        }
+        switch(ticket){
+                case 1: pass:printf("ENTER ADMIN PASSWORD..\nTo Exit press 0\n..");
+                        scanf("%d",&pass);
+                        if(pass==1234){
+                                printf("Displaying all Tickets booked\n");
+                                while(temp!=head){
+                                        printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
+                                        printf("node:%p\nnext:%p\nprev:%p\n",temp,temp->next,temp->prev);
+                                        temp=temp->next;
+                                        printf("\n");
+                                }
+                                printf("\nTotal Number of Tickets Booked : %d\nnode:%p\nnext:%p\nprev:%p\n",head->total,head,head->next,head->prev);
+                        }
+                        else if(pass==0){
+                                printf("going back..\n");
+                                goto display;
+                        }
+                        else{
+                                printf("Invalid ID...Try Again\n");
+                                goto pass;
+                        }
+                
+                default: return;
+        }
+}
 int main(){
+        id=1321;
         ava_seat[1][1]=25,ava_seat[1][2]=31,ava_seat[1][3]=28,ava_seat[2][1]=29,ava_seat[2][2]=35,ava_seat[2][3]=33,ava_seat[3][1]=25,ava_seat[3][2]=29,ava_seat[3][3]=32;
         int ch;node *new;
         while(1){
@@ -130,13 +163,14 @@ int main(){
                     new=book_ticket(new);
                     new=checkout(new);
                     ava_seat[new->mov_sel][new->user_ddt]=ava_seat[new->mov_sel][new->user_ddt]-(new->bookseats);
+                    new->ticket_id=id++;
                     insert_rear(new);
                     break;
             case 2: edit_ticket();
                     break;
             case 3: cancel_ticket();
                     break;
-            case 4: display_ticket();
+            case 4: display_ticket(new);
                     break;
             default:    printf("exiting...\n");
                         exit(0);
