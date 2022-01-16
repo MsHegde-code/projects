@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 typedef struct movies{
-    char movie_name[20],day[10],place[20],name[20];
+    char movie_name[22],day[10],place[20],name[20];
     int date,total,phone,bookseats,mov_sel,user_ddt,ticket_id;
     float bill,time;
     struct movies *next,*prev;
@@ -80,11 +80,11 @@ node* book_ticket(node *new){
                 scanf("%d",&new->user_ddt);
                 //movie="SPIDER MAN : AT HOME"
                 switch(new->user_ddt){
-                    case 1: strcpy(new->movie_name,"SPIDER MAN : AT HOME");    new->date=17;   strcpy(new->day,"MONDAY");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL");
+                    case 1: strcpy(new->movie_name,"SPIDER MAN");    new->date=17;   strcpy(new->day,"MONDAY");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL");
                             break;
-                    case 2: strcpy(new->movie_name,"SPIDER MAN : AT HOME");    new->date=19;   strcpy(new->day,"WEDNESDAY");   new->time=2.40; strcpy(new->place,"ORION MALL"); 
+                    case 2: strcpy(new->movie_name,"SPIDER MAN");    new->date=19;   strcpy(new->day,"WEDNESDAY");   new->time=2.40; strcpy(new->place,"ORION MALL"); 
                             break;
-                    case 3: strcpy(new->movie_name,"SPIDER MAN : AT HOME");    new->date=20;   strcpy(new->day,"FRIDAY");   new->time=2.40; strcpy(new->place,"ROYAL MALL");
+                    case 3: strcpy(new->movie_name,"SPIDER MAN");    new->date=20;   strcpy(new->day,"FRIDAY");   new->time=2.40; strcpy(new->place,"ROYAL MALL");
                             break;
                     default:printf("\ninvalid input\n");
                             goto ddt_sel3;
@@ -109,7 +109,7 @@ node* checkout(node *new){
         printf("TO CONFIRM PRESS (Y)ES OR (N)O TO GO BACK TO FILL AGAIN\n");
         scanf("\n%c",&ch);
         if(ch=='Y'||ch=='y'){
-                printf("Ticket Successfully booked\nREDIRECTING TO MAIN MENU\n");
+                printf("TICKET ID : %d SUCCESSFULLY BOOKED\nREDIRECTING TO MAIN MENU\n",new->ticket_id);
                 return new;
                 }
         else    goto form;
@@ -117,7 +117,7 @@ node* checkout(node *new){
 void edit_ticket(){}
 void cancel_ticket(){}
 void display_ticket(node *new){
-        node *temp=start;int ticket,pass;
+        node *temp=start;int ticket,pass,tick_id;
         display:printf("\n|\tDisplay Ticket\t|\n1.View all Tickets\n2.View Indivisual tickets\n3.Exit\n");
         scanf("%d",&ticket);
         if(start==0){
@@ -145,7 +145,16 @@ void display_ticket(node *new){
                                 printf("Invalid ID...Try Again\n");
                                 goto pass;
                         }
-                
+                case 2: printf("ENTER THE TICKET ID : ");
+                        scanf("%d",&tick_id);
+                        while(temp!=head){
+                                if(tick_id==temp->ticket_id){
+                                        printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
+                                        return;
+                                }
+                                temp=temp->next;
+                        }
+                        printf("Invalid Ticket ID");
                 default: return;
         }
 }
@@ -161,9 +170,9 @@ int main(){
         switch(ch){
             case 1: new=create();
                     new=book_ticket(new);
+                    new->ticket_id=id++;
                     new=checkout(new);
                     ava_seat[new->mov_sel][new->user_ddt]=ava_seat[new->mov_sel][new->user_ddt]-(new->bookseats);
-                    new->ticket_id=id++;
                     insert_rear(new);
                     break;
             case 2: edit_ticket();
