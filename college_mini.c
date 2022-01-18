@@ -3,11 +3,11 @@
 #include<string.h>
 typedef struct movies{
     char movie_name[22],day[10],place[20],name[20];
-    int date,total,phone,bookseats,mov_sel,user_ddt,ticket_id;
+    int date,total,phone,bookseats,mov_sel,ticket_id;
     float bill,time;
     struct movies *next,*prev;
 }node;
-int ava_seat[3][3],id;//updating the available seats
+int id;//updating the available seats
 node *start=NULL,*head;
 node* create(){
     node *new;
@@ -40,58 +40,35 @@ void display_menu(){
     }//display the border
     printf("\n|\t1.BOOK TICKET\n|\t2.EDIT TICKET\n|\t3.CANCEL TICKET\n|\t4.DISPLAY TICKET\n|\t5.EXIT\n");
 }
-node* book_ticket(node *new){
-    display_movie:printf("\n|\tavaliable movies\t|\n|\t1.KGF CHAPTER 2\n|\t2.BAHUBALLI REBORN\n|\t3.SPIDER MAN : AT HOME\n|\t4.***COMING SOON ***\nwaiting for your choice :)  .....\t");
-    scanf("%d",&new->mov_sel);
-    printf("|date & day|\t|time|\t|theatre|\t|available seats|\n");
-    switch(new->mov_sel){
-        case 1: ddt_sel1:printf("1.12th wed\t2:40pm\tvega city mall\t%d\n2.14th fri\t9:00pm\torion mall\t%d\n3.16th sun\t5:45pm\troyal mall\t%d\n",ava_seat[1][1],ava_seat[1][2],ava_seat[1][3]);
-                printf("waiting for your choice :) ....\t");
-                scanf("%d",&new->user_ddt);
-                //movie="KGF CHAPTER 2"
-                switch(new->user_ddt){
-                    case 1: strcpy(new->movie_name,"KGF CHAPTER 2");    new->date=12;   strcpy(new->day,"wednesday");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL"); 
-                            break;
-                    case 2: strcpy(new->movie_name,"KGF CHAPTER 2");    new->date=14;   strcpy(new->day,"friday");   new->time=9.00; strcpy(new->place,"ORION MALL");   
-                            break;
-                    case 3: strcpy(new->movie_name,"KGF CHAPTER 2");    new->date=16;   strcpy(new->day,"sunday");   new->time=5.45; strcpy(new->place,"ROYAL MALL");   
-                            break;
-                    default:printf("\ninvalid input\n");
-                            goto ddt_sel1;
-                }
-                break;
-        case 2: ddt_sel2:printf("1.11th TUE\t8:40pm\tvega city mall\t%d\n2.13th THU\t3:00pm\torion mall\t%d\n3.15th SAT\t6:45pm\troyal mall\t%d\n",ava_seat[2][1],ava_seat[2][2],ava_seat[2][3]);
-                printf("waiting for your choice :) ....\t");
-                scanf("%d",&new->user_ddt);
-                //movie="BAHUBALLI REBORN"
-                switch(new->user_ddt){
-                    case 1: strcpy(new->movie_name,"BAHUBALLI REBORN");    new->date=11;   strcpy(new->day,"TUESDAY");   new->time=8.40; strcpy(new->place,"VEGA CITY MALL");   
-                            break;
-                    case 2: strcpy(new->movie_name,"BAHUBALLI REBORN");    new->date=13;   strcpy(new->day,"THURSDAY");   new->time=3.00; strcpy(new->place,"ORION MALL");
-                            break;
-                    case 3: strcpy(new->movie_name,"BAHUBALLI REBORN");    new->date=15;   strcpy(new->day,"SATURDAY");   new->time=6.45; strcpy(new->place,"ROYAL MALL");
-                            break;
-                    default:printf("\ninvalid input\n");
-                            goto ddt_sel2;
-                }
-                break;
-        case 3: ddt_sel3:printf("1.17th MON\t6:40pm\tvega city mall\t%d\n2.19th WED\t2:00pm\torion mall\t%d\n3.20th THU\t8:45pm\troyal mall\t%d\n",ava_seat[3][1],ava_seat[3][2],ava_seat[3][3]);
-                printf("waiting for your choice :) ....\t");
-                scanf("%d",&new->user_ddt);
-                //movie="SPIDER MAN : AT HOME"
-                switch(new->user_ddt){
-                    case 1: strcpy(new->movie_name,"SPIDER MAN");    new->date=17;   strcpy(new->day,"MONDAY");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL");
-                            break;
-                    case 2: strcpy(new->movie_name,"SPIDER MAN");    new->date=19;   strcpy(new->day,"WEDNESDAY");   new->time=2.40; strcpy(new->place,"ORION MALL"); 
-                            break;
-                    case 3: strcpy(new->movie_name,"SPIDER MAN");    new->date=20;   strcpy(new->day,"FRIDAY");   new->time=2.40; strcpy(new->place,"ROYAL MALL");
-                            break;
-                    default:printf("\ninvalid input\n");
-                            goto ddt_sel3;
-                }
+node* book_ticket(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
+        display_movie:printf("|avaliable movies| |date & day| |time| |theatre|\t|available seats|\n");
+        printf("| 1.Movie 1\t  12th wed\t2:40pm\tvega city mall\t%d\n| 2.Movie 2\t  13th THU\t3:00pm\torion mall\t%d\n| 3.Movie 3\t  20th THU\t8:45pm\troyal mall\t%d\n",ava_seat1,ava_seat2,ava_seat3);
+        printf("Waiting for your choice :)...\t");
+        scanf("%d",&new->mov_sel);
+        switch(new->mov_sel){
+                case 1: if(ava_seat1==0){
+                        printf("Sorry!!\tNO SEATS AVAILABLE\n");        goto display_movie;
+                        }
+                        else{
+                                strcpy(new->movie_name,"Movie 1");    new->date=12;   strcpy(new->day,"wednesday");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL");;
+                        }
+                        break;
+                case 2: if(ava_seat2==0){
+                        printf("Sorry!!\tNO SEATS AVAILABLE\n");        goto display_movie;
+                        } 
+                        else{
+                                strcpy(new->movie_name,"Movie 2");    new->date=13;   strcpy(new->day,"THURSDAY");   new->time=3.00; strcpy(new->place,"ORION MALL");
+                        }
+                        break;
+                case 3: if(ava_seat3==0){
+                                printf("Sorry!!\tNO SEATS AVAILABLE\n");        goto display_movie;
+                        }
+                        else{
+                                strcpy(new->movie_name,"Movie 3");    new->date=20;   strcpy(new->day,"FRIDAY");   new->time=2.40; strcpy(new->place,"ROYAL MALL");
+                        }
                 break;
         default: printf("\ninvalid input\n");
-                    goto display_movie;
+                 goto display_movie;
     }
     return new;
 }
@@ -145,6 +122,7 @@ void display_ticket(node *new){
                                 printf("Invalid ID...Try Again\n");
                                 goto pass;
                         }
+                        break;
                 case 2: printf("ENTER THE TICKET ID : ");
                         scanf("%d",&tick_id);
                         while(temp!=head){
@@ -160,7 +138,7 @@ void display_ticket(node *new){
 }
 int main(){
         id=1321;
-        ava_seat[1][1]=25,ava_seat[1][2]=31,ava_seat[1][3]=28,ava_seat[2][1]=29,ava_seat[2][2]=35,ava_seat[2][3]=33,ava_seat[3][1]=25,ava_seat[3][2]=29,ava_seat[3][3]=32;
+        int ava_seat1=25,ava_seat2=3,ava_seat3=14;
         int ch;node *new;
         while(1){
         printf("\n\t|\tMOVIE TICKET BOOKING SYSTEM\t|\n");
@@ -169,10 +147,12 @@ int main(){
         scanf("%d",&ch);
         switch(ch){
             case 1: new=create();
-                    new=book_ticket(new);
+                    new=book_ticket(new,ava_seat1,ava_seat2,ava_seat3);
                     new->ticket_id=id++;
                     new=checkout(new);
-                    ava_seat[new->mov_sel][new->user_ddt]=ava_seat[new->mov_sel][new->user_ddt]-(new->bookseats);
+                    if(new->mov_sel==1)           ava_seat1=ava_seat1-(new->bookseats);
+                    else if(new->mov_sel==2)          ava_seat2=ava_seat2-(new->bookseats);  
+                    else if(new->mov_sel==3)        ava_seat3=ava_seat3-(new->bookseats);            
                     insert_rear(new);
                     break;
             case 2: edit_ticket();
