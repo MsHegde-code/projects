@@ -72,14 +72,31 @@ node* book_ticket(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
     }
     return new;
 }
-node* checkout(node *new){
+node* checkout(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
         char ch;
         form:printf("\nENTER CUSTOMER INFORMATION\nNAME : \t");
         scanf("%s",new->name);
         printf("\nENTER THE PHONE NUMBER : \t");
         scanf("%d",&new->phone);
-        printf("\nCOST PER SEAT : RS.230.25 (INCL GST)\nHOW MANY SEATS?? : \t");
+        ask:printf("\nCOST PER SEAT : RS.230.25 (INCL GST)\nHOW MANY SEATS?? : \t");
         scanf("%d",&new->bookseats);
+        switch(new->mov_sel){
+            case 1: if(new->bookseats>ava_seat1){
+                        printf("Selected Number of Seats not available\nSelect within the Range\n");
+                        goto ask;
+                        }
+                    break;
+            case 2: if(new->bookseats>ava_seat2){
+                        printf("Selected Number of Seats not available\nSelect within the Range\n");
+                        goto ask;
+                        }
+                    break;
+            default: if(new->bookseats>ava_seat3){
+                        printf("Selected Number of Seats not available\nSelect within the Range\n");
+                        goto ask;
+                        }
+                    break;
+        }
         new->bill=0;
         new->bill=(new->bookseats)*230.25;
         printf("AMOUNT TO BE PAID : Rs.%.3f\n",new->bill);
@@ -149,7 +166,7 @@ int main(){
             case 1: new=create();
                     new=book_ticket(new,ava_seat1,ava_seat2,ava_seat3);
                     new->ticket_id=id++;
-                    new=checkout(new);
+                    new=checkout(new,ava_seat1,ava_seat2,ava_seat3);
                     if(new->mov_sel==1)           ava_seat1=ava_seat1-(new->bookseats);
                     else if(new->mov_sel==2)          ava_seat2=ava_seat2-(new->bookseats);  
                     else if(new->mov_sel==3)        ava_seat3=ava_seat3-(new->bookseats);            
