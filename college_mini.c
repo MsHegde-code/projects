@@ -29,16 +29,8 @@ void insert_rear(node *new){
         return;
     }
     while(temp->next!=head)     temp=temp->next;
-    temp->next=new;     new->prev=temp;     new->next=head;     head->prev=temp;        (head->total)++;
+    temp->next=new;     new->prev=temp;     new->next=head;     head->prev=new;        (head->total)++;
     return;
-}
-void display_menu(){
-    int ch;
-    for (size_t i = 0; i < 20; i++)
-    {
-        printf("---");
-    }//display the border
-    printf("\n|\t1.BOOK TICKET\n|\t2.EDIT TICKET\n|\t3.CANCEL TICKET\n|\t4.DISPLAY TICKET\n|\t5.EXIT\n");
 }
 node* book_ticket(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
         display_movie:printf("|avaliable movies| |date & day| |time| |theatre|\t|available seats|\n");
@@ -78,7 +70,7 @@ node* checkout(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
         scanf("%s",new->name);
         printf("\nENTER THE PHONE NUMBER : \t");
         scanf("%d",&new->phone);
-        ask:printf("\nCOST PER SEAT : RS.230.25 (INCL GST)\nHOW MANY SEATS?? : \t");
+        ask:printf("\nCOST PER SEAT : RS.230.25 (INCL GST)\nBOOK 3+ TICKETS TO GET A DISCOUNT OF 10 PERCENT ON THE TOTAL BILL\nHOW MANY SEATS?? : \t");
         scanf("%d",&new->bookseats);
         switch(new->mov_sel){
             case 1: if(new->bookseats>ava_seat1){
@@ -98,7 +90,8 @@ node* checkout(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
                     break;
         }
         new->bill=0;
-        new->bill=(new->bookseats)*230.25;
+        if(new->bookseats>2)    new->bill=(new->bookseats)*207.225;
+        else    new->bill=(new->bookseats)*230.25;
         printf("AMOUNT TO BE PAID : Rs.%.3f\n",new->bill);
         printf("TO CONFIRM PRESS (Y)ES OR (N)O TO GO BACK TO FILL AGAIN\n");
         scanf("\n%c",&ch);
@@ -108,8 +101,69 @@ node* checkout(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
                 }
         else    goto form;
 }
-void edit_ticket(){}
-void cancel_ticket(){}
+void edit_ticket(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
+    //editing should be done only once
+    int user_id,ch,change_movie,old_seat;node *temp=head->next;
+    printf("Enter the Ticket ID...\t");
+    scanf("%d",&user_id);
+    printf("Edit Ticket\n1.Name,phone,number of seats\n2.movie\n");
+    scanf("%d",&ch);
+    switch(ch){
+        case 1: 
+                while(temp!=head){
+                    if(user_id==temp->ticket_id){
+                        //updating the total seats
+                        if(temp->mov_sel==1)    ava_seat1=ava_seat1+temp->bookseats;
+                        else if(temp->mov_sel==2)   ava_seat2=ava_seat2+temp->bookseats;
+                        else if(temp->mov_sel==3) ava_seat3=ava_seat3+temp->bookseats;
+                        checkout(temp,ava_seat1,ava_seat2,ava_seat3);
+                        printf("Updated Ticket :\n");
+                        printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
+                        return;
+                    }
+                    temp=temp->next;
+                }
+                printf("INVALID TICKET ID\n");
+                break;
+        case 2: 
+                while(temp!=head){
+                    if(user_id==temp->ticket_id){
+                        book_ticket(temp,ava_seat1,ava_seat2,ava_seat3);
+                        printf("Updated Ticket :\n");
+                        printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
+                        return;
+                    }
+                    temp=temp->next;
+                }
+                printf("Invalid ticket ID\n");
+                break;
+    }
+}
+void cancel_ticket(){
+    //deduct the cancellation amount 
+    node *temp=head,*prev;int id;
+    printf("enter the ticket id\n");
+    scanf("%d",&id);
+    if(temp->next==head || head->total==0){//temp started from head
+        printf("no tickets booked to be canceled\n");
+        return;
+    }
+    while(temp->next!=head){
+        prev=temp;      temp=temp->next;
+        if(temp->ticket_id==id){
+            printf("deleted item:%d",temp->ticket_id);
+            prev->next=temp->next;  (temp->next)->prev=prev;
+            head->total--;      temp=NULL ;
+               free(temp);      return;
+        }
+    }
+    if(temp->ticket_id==id && temp->next==head){ //to delete the last node
+        printf("deleted item:%d",temp->ticket_id);
+        head->prev=temp->prev;      (temp->prev)->next=head;       head->total--;
+        temp=NULL; free(temp);
+        return;
+    }
+}
 void display_ticket(node *new){
         node *temp=start;int ticket,pass,tick_id;
         display:printf("\n|\tDisplay Ticket\t|\n1.View all Tickets\n2.View Indivisual tickets\n3.Exit\n");
@@ -119,26 +173,15 @@ void display_ticket(node *new){
                 return;
         }
         switch(ticket){
-                case 1: pass:printf("ENTER ADMIN PASSWORD..\nTo Exit press 0\n..");
-                        scanf("%d",&pass);
-                        if(pass==1234){
-                                printf("Displaying all Tickets booked\n");
-                                while(temp!=head){
+                case 1:
+                        printf("Displaying all Tickets booked\n");
+                            while(temp!=head){
                                         printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
                                         printf("node:%p\nnext:%p\nprev:%p\n",temp,temp->next,temp->prev);
                                         temp=temp->next;
                                         printf("\n");
-                                }
-                                printf("\nTotal Number of Tickets Booked : %d\nnode:%p\nnext:%p\nprev:%p\n",head->total,head,head->next,head->prev);
-                        }
-                        else if(pass==0){
-                                printf("going back..\n");
-                                goto display;
-                        }
-                        else{
-                                printf("Invalid ID...Try Again\n");
-                                goto pass;
-                        }
+                            }
+                        printf("\nTotal Number of Tickets Booked : %d\nnode:%p\nnext:%p\nprev:%p\n",head->total,head,head->next,head->prev);
                         break;
                 case 2: printf("ENTER THE TICKET ID : ");
                         scanf("%d",&tick_id);
@@ -159,7 +202,9 @@ int main(){
         int ch;node *new;
         while(1){
         printf("\n\t|\tMOVIE TICKET BOOKING SYSTEM\t|\n");
-        display_menu(); 
+        for (size_t i = 0; i < 20; i++)
+            printf("---");
+        printf("\n|\t1.BOOK TICKET\n|\t2.EDIT TICKET\n|\t3.CANCEL TICKET\n|\t4.DISPLAY TICKET\n|\t5.EXIT\n"); 
         printf("waiting for your choice.....\t");
         scanf("%d",&ch);
         switch(ch){
@@ -172,7 +217,7 @@ int main(){
                     else if(new->mov_sel==3)        ava_seat3=ava_seat3-(new->bookseats);            
                     insert_rear(new);
                     break;
-            case 2: edit_ticket();
+            case 2: edit_ticket(new,ava_seat1,ava_seat2,ava_seat3);
                     break;
             case 3: cancel_ticket();
                     break;
