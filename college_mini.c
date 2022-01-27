@@ -3,11 +3,12 @@
 #include<string.h>
 typedef struct movies{
     char movie_name[22],day[10],place[20],name[20];
-    int date,total,phone,bookseats,mov_sel,ticket_id;
+    int date,total,phone,bookseats,mov_sel,ticket_id,flag;
     float bill,time;
     struct movies *next,*prev;
 }node;
 int id;//updating the available seats
+int ava_seat1=25,ava_seat2=3,ava_seat3=14;
 node *start=NULL,*head;
 node* create(){
     node *new;
@@ -32,31 +33,47 @@ void insert_rear(node *new){
     temp->next=new;     new->prev=temp;     new->next=head;     head->prev=new;        (head->total)++;
     return;
 }
-node* book_ticket(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
+node* book_ticket(node *new){
+        int ch;
         display_movie:printf("|avaliable movies| |date & day| |time| |theatre|\t|available seats|\n");
         printf("| 1.Movie 1\t  12th wed\t2:40pm\tvega city mall\t%d\n| 2.Movie 2\t  13th THU\t3:00pm\torion mall\t%d\n| 3.Movie 3\t  20th THU\t8:45pm\troyal mall\t%d\n",ava_seat1,ava_seat2,ava_seat3);
         printf("Waiting for your choice :)...\t");
-        scanf("%d",&new->mov_sel);
-        switch(new->mov_sel){
+        scanf("%d",&ch);
+        switch(ch){
                 case 1: if(ava_seat1==0){
                         printf("Sorry!!\tNO SEATS AVAILABLE\n");        goto display_movie;
                         }
-                        else{
-                                strcpy(new->movie_name,"Movie 1");    new->date=12;   strcpy(new->day,"wednesday");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL");;
+                        else{  
+                            if(new->flag==1){
+                                printf("Cannot select the same movie\n");
+                                return new;
+                                }
+                                new->mov_sel=1;
+                                strcpy(new->movie_name,"Movie 1");    new->date=12;   strcpy(new->day,"wednesday");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL");  new->flag=1;
                         }
                         break;
                 case 2: if(ava_seat2==0){
                         printf("Sorry!!\tNO SEATS AVAILABLE\n");        goto display_movie;
                         } 
                         else{
-                                strcpy(new->movie_name,"Movie 2");    new->date=13;   strcpy(new->day,"THURSDAY");   new->time=3.00; strcpy(new->place,"ORION MALL");
+                                if(new->flag==2){
+                                printf("Cannot select the same movie\n");
+                                return new;
+                                }
+                                new->mov_sel=2;
+                                strcpy(new->movie_name,"Movie 2");    new->date=13;   strcpy(new->day,"THURSDAY");   new->time=3.00; strcpy(new->place,"ORION MALL");   new->flag=2;
                         }
                         break;
                 case 3: if(ava_seat3==0){
                                 printf("Sorry!!\tNO SEATS AVAILABLE\n");        goto display_movie;
                         }
                         else{
-                                strcpy(new->movie_name,"Movie 3");    new->date=20;   strcpy(new->day,"FRIDAY");   new->time=2.40; strcpy(new->place,"ROYAL MALL");
+                                if(new->flag==3){
+                                printf("Cannot select the same movie\n");
+                                return new;
+                                }
+                                new->mov_sel=3;
+                                strcpy(new->movie_name,"Movie 3");    new->date=20;   strcpy(new->day,"FRIDAY");   new->time=2.40; strcpy(new->place,"ROYAL MALL"); new->flag=3;
                         }
                 break;
         default: printf("\ninvalid input\n");
@@ -64,7 +81,7 @@ node* book_ticket(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
     }
     return new;
 }
-node* checkout(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
+node* checkout(node *new){
         char ch;
         form:printf("\nENTER CUSTOMER INFORMATION\nNAME : \t");
         scanf("%s",new->name);
@@ -89,6 +106,10 @@ node* checkout(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
                         }
                     break;
         }
+        //to update the seats
+        if(new->mov_sel==1)           ava_seat1=ava_seat1-(new->bookseats);
+        else if(new->mov_sel==2)          ava_seat2=ava_seat2-(new->bookseats);  
+        else if(new->mov_sel==3)        ava_seat3=ava_seat3-(new->bookseats);
         new->bill=0;
         if(new->bookseats>2)    new->bill=(new->bookseats)*207.225;
         else    new->bill=(new->bookseats)*230.25;
@@ -101,12 +122,12 @@ node* checkout(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
                 }
         else    goto form;
 }
-void edit_ticket(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
+void edit_ticket(node *new){
     //editing should be done only once
-    int user_id,ch,change_movie,old_seat;node *temp=head->next;
+    int user_id,ch;node *temp=head->next;
     printf("Enter the Ticket ID...\t");
     scanf("%d",&user_id);
-    printf("Edit Ticket\n1.Name,phone,number of seats\n2.movie\n");
+    edit_menu:printf("\n1.Edit Name,phone,number of seats\n2.Edit movie\n3.go back\n");
     scanf("%d",&ch);
     switch(ch){
         case 1: 
@@ -116,7 +137,7 @@ void edit_ticket(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
                         if(temp->mov_sel==1)    ava_seat1=ava_seat1+temp->bookseats;
                         else if(temp->mov_sel==2)   ava_seat2=ava_seat2+temp->bookseats;
                         else if(temp->mov_sel==3) ava_seat3=ava_seat3+temp->bookseats;
-                        checkout(temp,ava_seat1,ava_seat2,ava_seat3);
+                        checkout(temp);
                         printf("Updated Ticket :\n");
                         printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
                         return;
@@ -128,7 +149,18 @@ void edit_ticket(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
         case 2: 
                 while(temp!=head){
                     if(user_id==temp->ticket_id){
-                        book_ticket(temp,ava_seat1,ava_seat2,ava_seat3);
+                       // temp->flag=1;      
+                        //to update the seats as per movie selection
+                        if(temp->mov_sel==1)    ava_seat1=ava_seat1+temp->bookseats;
+                        else if(temp->mov_sel==2)   ava_seat2=ava_seat2+temp->bookseats;
+                        else if(temp->mov_sel==3) ava_seat3=ava_seat3+temp->bookseats;
+                        printf("CHECK: MOV:%d\tCHECK SEATS:%d\n",temp->mov_sel,temp->bookseats);
+                    book_ticket(temp);
+                        if(temp->mov_sel==1)    ava_seat1=ava_seat1-temp->bookseats;
+                        else if(temp->mov_sel==2)   ava_seat2=ava_seat2-temp->bookseats;
+                        else if(temp->mov_sel==3) ava_seat3=ava_seat3-temp->bookseats;
+                        printf("CHECK: MOV:%d\tCHECK SEATS:%d\n",temp->mov_sel,temp->bookseats);
+                    if(temp->flag>0)    goto edit_menu;
                         printf("Updated Ticket :\n");
                         printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
                         return;
@@ -137,6 +169,7 @@ void edit_ticket(node *new,int ava_seat1,int ava_seat2,int ava_seat3){
                 }
                 printf("Invalid ticket ID\n");
                 break;
+        default: return;
     }
 }
 void cancel_ticket(){
@@ -198,7 +231,6 @@ void display_ticket(node *new){
 }
 int main(){
         id=1321;
-        int ava_seat1=25,ava_seat2=3,ava_seat3=14;
         int ch;node *new;
         while(1){
         printf("\n\t|\tMOVIE TICKET BOOKING SYSTEM\t|\n");
@@ -209,15 +241,12 @@ int main(){
         scanf("%d",&ch);
         switch(ch){
             case 1: new=create();
-                    new=book_ticket(new,ava_seat1,ava_seat2,ava_seat3);
+                    new=book_ticket(new);
                     new->ticket_id=id++;
-                    new=checkout(new,ava_seat1,ava_seat2,ava_seat3);
-                    if(new->mov_sel==1)           ava_seat1=ava_seat1-(new->bookseats);
-                    else if(new->mov_sel==2)          ava_seat2=ava_seat2-(new->bookseats);  
-                    else if(new->mov_sel==3)        ava_seat3=ava_seat3-(new->bookseats);            
+                    new=checkout(new);            
                     insert_rear(new);
                     break;
-            case 2: edit_ticket(new,ava_seat1,ava_seat2,ava_seat3);
+            case 2: edit_ticket(new);
                     break;
             case 3: cancel_ticket();
                     break;
