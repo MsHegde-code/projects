@@ -123,7 +123,6 @@ node* checkout(node *new){
         else    goto form;
 }
 void edit_ticket(node *new){
-    //editing should be done only once
     int user_id,ch;node *temp=head->next;
     printf("Enter the Ticket ID...\t");
     scanf("%d",&user_id);
@@ -148,8 +147,7 @@ void edit_ticket(node *new){
                 break;
         case 2: 
                 while(temp!=head){
-                    if(user_id==temp->ticket_id){
-                       // temp->flag=1;      
+                    if(user_id==temp->ticket_id){      
                         //to update the seats as per movie selection
                         if(temp->mov_sel==1)    ava_seat1=ava_seat1+temp->bookseats;
                         else if(temp->mov_sel==2)   ava_seat2=ava_seat2+temp->bookseats;
