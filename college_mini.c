@@ -172,28 +172,31 @@ void edit_ticket(node *new){
 }
 void cancel_ticket(){
     //deduct the cancellation amount 
-    node *temp=head,*prev;int id;
-    printf("enter the ticket id\n");
+    node *temp=head->next,*prev=head;int id;
+    printf("Ticket Cancellation fee is 8%c\n",'%');
+    printf("Enter the Ticket ID :\t");
     scanf("%d",&id);
-    if(temp->next==head || head->total==0){//temp started from head
-        printf("no tickets booked to be canceled\n");
-        return;
+    if(temp->next==head){
+        printf("Ticket %d ID is cancelled\n",temp->ticket_id);
+        printf("Refund amount is %.3f",(temp->bill)*0.92);
+        head->next=NULL;    head->prev=NULL;    head->total--;
+        free(temp);
     }
-    while(temp->next!=head){
-        prev=temp;      temp=temp->next;
+    while(temp!=head){
         if(temp->ticket_id==id){
-            printf("deleted item:%d",temp->ticket_id);
-            prev->next=temp->next;  (temp->next)->prev=prev;
-            head->total--;      temp=NULL ;
-               free(temp);      return;
+            printf("Ticket %d ID is removed\n",temp->ticket_id);
+            printf("Refund amount is %.3f",(temp->bill)*0.92);
+            prev->next=temp->next;
+            temp=temp->next;
+            free(temp->prev);
+            temp->prev=prev;
+            head->total--;
+            return;
         }
+        prev=temp;
+        temp=temp->next;
     }
-    if(temp->ticket_id==id && temp->next==head){ //to delete the last node
-        printf("deleted item:%d",temp->ticket_id);
-        head->prev=temp->prev;      (temp->prev)->next=head;       head->total--;
-        temp=NULL; free(temp);
-        return;
-    }
+    printf("Invalid Ticket ID\n");
 }
 void display_ticket(node *new){
         node *temp=start;int ticket,pass,tick_id;
@@ -232,8 +235,6 @@ int main(){
         int ch;node *new;
         while(1){
         printf("\n\t|\tMOVIE TICKET BOOKING SYSTEM\t|\n");
-        for (size_t i = 0; i < 20; i++)
-            printf("---");
         printf("\n|\t1.BOOK TICKET\n|\t2.EDIT TICKET\n|\t3.CANCEL TICKET\n|\t4.DISPLAY TICKET\n|\t5.EXIT\n"); 
         printf("waiting for your choice.....\t");
         scanf("%d",&ch);
