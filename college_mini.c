@@ -172,7 +172,7 @@ void edit_ticket(node *new){
 }
 void cancel_ticket(){
     //deduct the cancellation amount 
-    node *temp=head->next,*prev=head;int id;
+    node *temp=head->next;int id;
     printf("Ticket Cancellation fee is 8%c\n",'%');
     printf("Enter the Ticket ID :\t");
     scanf("%d",&id);
@@ -181,19 +181,18 @@ void cancel_ticket(){
         printf("Refund amount is %.3f",(temp->bill)*0.92);
         head->next=NULL;    head->prev=NULL;    head->total--;
         free(temp);
+        return;
     }
     while(temp!=head){
         if(temp->ticket_id==id){
             printf("Ticket %d ID is removed\n",temp->ticket_id);
             printf("Refund amount is %.3f",(temp->bill)*0.92);
-            prev->next=temp->next;
-            temp=temp->next;
-            free(temp->prev);
-            temp->prev=prev;
+            (temp->prev)->next=temp->next;
+            (temp->next)->prev=temp->prev;
             head->total--;
+            free(temp);
             return;
         }
-        prev=temp;
         temp=temp->next;
     }
     printf("Invalid Ticket ID\n");
