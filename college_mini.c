@@ -173,7 +173,7 @@ void edit_ticket(node *new){
 void cancel_ticket(){
     //deduct the cancellation amount 
     node *temp=head->next;int id;
-    printf("Ticket Cancellation fee is 8%c\n",'%');
+    printf("Ticket Cancellation charges is 8%c\n",'%');
     printf("Enter the Ticket ID :\t");
     scanf("%d",&id);
     if(temp->next==head){
@@ -234,7 +234,7 @@ int main(){
         int ch;node *new;
         while(1){
         printf("\n\t|\tMOVIE TICKET BOOKING SYSTEM\t|\n");
-        printf("\n|\t1.BOOK TICKET\n|\t2.EDIT TICKET\n|\t3.CANCEL TICKET\n|\t4.DISPLAY TICKET\n|\t5.EXIT\n"); 
+        printf("\n\t1.BOOK TICKET\n\t2.EDIT TICKET\n\t3.CANCEL TICKET\n\t4.DISPLAY TICKET\n\t5.EXIT\n"); 
         printf("waiting for your choice.....\t");
         scanf("%d",&ch);
         switch(ch){
