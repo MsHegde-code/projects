@@ -3,8 +3,8 @@
 #include<string.h>
 typedef struct movies{
     char movie_name[22],day[10],place[20],name[20];
-    int date,total,phone,bookseats,mov_sel,ticket_id,flag;
-    float bill,time;
+    int date,total,bookseats,mov_sel,ticket_id,flag;
+    float bill,time;double phone;
     struct movies *next,*prev;
 }node;
 int id;//updating the available seats
@@ -85,8 +85,13 @@ node* checkout(node *new){
         char ch;
         form:printf("\nENTER CUSTOMER INFORMATION\nNAME : \t");
         scanf("%s",new->name);
-        printf("\nENTER THE PHONE NUMBER : \t");
-        scanf("%d",&new->phone);
+        new->phone=0;
+        ph:printf("\nENTER THE PHONE NUMBER : \t");
+        scanf("%lf",&new->phone);
+        if(new->phone<999999999){
+                printf("Invalid Phone number..!");
+                goto ph;
+        }
         ask:printf("\nCOST PER SEAT : RS.230.25 (INCL GST)\nBOOK 3+ TICKETS TO GET A DISCOUNT OF 10 PERCENT ON THE TOTAL BILL\nHOW MANY SEATS?? : \t");
         scanf("%d",&new->bookseats);
         switch(new->mov_sel){
@@ -149,16 +154,19 @@ void edit_ticket(node *new){
                 while(temp!=head){
                     if(user_id==temp->ticket_id){      
                         //to update the seats as per movie selection
+                        book:
                         if(temp->mov_sel==1)    ava_seat1=ava_seat1+temp->bookseats;
                         else if(temp->mov_sel==2)   ava_seat2=ava_seat2+temp->bookseats;
                         else if(temp->mov_sel==3) ava_seat3=ava_seat3+temp->bookseats;
-                        printf("CHECK: MOV:%d\tCHECK SEATS:%d\n",temp->mov_sel,temp->bookseats);
-                    book_ticket(temp);
+                        //printf("CHECK: MOV:%d\tCHECK SEATS:%d\n",temp->mov_sel,temp->bookseats);
+
+                        book_ticket(temp);
+
                         if(temp->mov_sel==1)    ava_seat1=ava_seat1-temp->bookseats;
                         else if(temp->mov_sel==2)   ava_seat2=ava_seat2-temp->bookseats;
                         else if(temp->mov_sel==3) ava_seat3=ava_seat3-temp->bookseats;
-                        printf("CHECK: MOV:%d\tCHECK SEATS:%d\n",temp->mov_sel,temp->bookseats);
-                    if(temp->flag>0)    goto edit_menu;
+                        //printf("CHECK: MOV:%d\tCHECK SEATS:%d\n",temp->mov_sel,temp->bookseats);
+                        if(temp->flag>0)    goto book;//this will check if the user has selected the same movie or not.
                         printf("Updated Ticket :\n");
                         printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
                         return;
@@ -233,7 +241,7 @@ int main(){
         id=1321;
         int ch;node *new;
         while(1){
-        printf("\n\t|\tMOVIE TICKET BOOKING SYSTEM\t|\n");
+        printf("\n|\tMOVIE TICKET BOOKING SYSTEM\t|\n");
         printf("\n\t1.BOOK TICKET\n\t2.EDIT TICKET\n\t3.CANCEL TICKET\n\t4.DISPLAY TICKET\n\t5.EXIT\n"); 
         printf("waiting for your choice.....\t");
         scanf("%d",&ch);
