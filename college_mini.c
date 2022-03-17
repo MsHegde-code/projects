@@ -1,13 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+FILE *fp;
 typedef struct movies{
     char movie_name[22],day[10],place[20],name[20];
     int date,total,bookseats,mov_sel,ticket_id,flag;
     float bill,time;double phone;
     struct movies *next,*prev;
 }node;
-int id;//updating the available seats
+int id,i=1;//updating the available seats
 int ava_seat1=25,ava_seat2=3,ava_seat3=14;
 node *start=NULL,*head;
 node* create(){
@@ -46,7 +47,7 @@ node* book_ticket(node *new){
                         else{  
                             if(new->flag==1){
                                 printf("Cannot select the same movie\n");
-                                return new;
+                                goto display_movie;
                                 }
                                 new->mov_sel=1;
                                 strcpy(new->movie_name,"Movie 1");    new->date=12;   strcpy(new->day,"wednesday");   new->time=2.40; strcpy(new->place,"VEGA CITY MALL");  new->flag=1;
@@ -58,7 +59,7 @@ node* book_ticket(node *new){
                         else{
                                 if(new->flag==2){
                                 printf("Cannot select the same movie\n");
-                                return new;
+                                goto display_movie;
                                 }
                                 new->mov_sel=2;
                                 strcpy(new->movie_name,"Movie 2");    new->date=13;   strcpy(new->day,"THURSDAY");   new->time=3.00; strcpy(new->place,"ORION MALL");   new->flag=2;
@@ -68,9 +69,9 @@ node* book_ticket(node *new){
                                 printf("Sorry!!\tNO SEATS AVAILABLE\n");        goto display_movie;
                         }
                         else{
-                                if(new->flag==3){
+                                if(new->flag==3){//this will check if the user has selected the same movie or not.
                                 printf("Cannot select the same movie\n");
-                                return new;
+                                goto display_movie;
                                 }
                                 new->mov_sel=3;
                                 strcpy(new->movie_name,"Movie 3");    new->date=20;   strcpy(new->day,"FRIDAY");   new->time=2.40; strcpy(new->place,"ROYAL MALL"); new->flag=3;
@@ -85,13 +86,8 @@ node* checkout(node *new){
         char ch;
         form:printf("\nENTER CUSTOMER INFORMATION\nNAME : \t");
         scanf("%s",new->name);
-        new->phone=0;
         ph:printf("\nENTER THE PHONE NUMBER : \t");
         scanf("%lf",&new->phone);
-        if(new->phone<999999999){
-                printf("Invalid Phone number..!");
-                goto ph;
-        }
         ask:printf("\nCOST PER SEAT : RS.230.25 (INCL GST)\nBOOK 3+ TICKETS TO GET A DISCOUNT OF 10 PERCENT ON THE TOTAL BILL\nHOW MANY SEATS?? : \t");
         scanf("%d",&new->bookseats);
         switch(new->mov_sel){
@@ -143,7 +139,7 @@ void edit_ticket(node *new){
                         else if(temp->mov_sel==3) ava_seat3=ava_seat3+temp->bookseats;
                         checkout(temp);
                         printf("Updated Ticket :\n");
-                        printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
+                        printf("|Name : %s|\t|Phone : %.0lf|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
                         return;
                     }
                     temp=temp->next;
@@ -154,7 +150,6 @@ void edit_ticket(node *new){
                 while(temp!=head){
                     if(user_id==temp->ticket_id){      
                         //to update the seats as per movie selection
-                        book:
                         if(temp->mov_sel==1)    ava_seat1=ava_seat1+temp->bookseats;
                         else if(temp->mov_sel==2)   ava_seat2=ava_seat2+temp->bookseats;
                         else if(temp->mov_sel==3) ava_seat3=ava_seat3+temp->bookseats;
@@ -166,9 +161,8 @@ void edit_ticket(node *new){
                         else if(temp->mov_sel==2)   ava_seat2=ava_seat2-temp->bookseats;
                         else if(temp->mov_sel==3) ava_seat3=ava_seat3-temp->bookseats;
                         //printf("CHECK: MOV:%d\tCHECK SEATS:%d\n",temp->mov_sel,temp->bookseats);
-                        if(temp->flag>0)    goto book;//this will check if the user has selected the same movie or not.
                         printf("Updated Ticket :\n");
-                        printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
+                        printf("|Name : %s|\t|Phone : %.0lf|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
                         return;
                     }
                     temp=temp->next;
@@ -207,9 +201,10 @@ void cancel_ticket(){
 }
 void display_ticket(node *new){
         node *temp=start;int ticket,pass,tick_id;
+        fp=fopen("Booked_Tickets.txt","w");
         display:printf("\n|\tDisplay Ticket\t|\n1.View all Tickets\n2.View Indivisual tickets\n3.Exit\n");
         scanf("%d",&ticket);
-        if(start==0){
+        if(start==NULL){
                 printf("NO TICKETS BOOKED\n");
                 return;
         }
@@ -217,18 +212,20 @@ void display_ticket(node *new){
                 case 1:
                         printf("Displaying all Tickets booked\n");
                             while(temp!=head){
-                                        printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
+                                        fprintf(fp,"Ticket - %d\n|Name : %s|\t|Phone : %.0lf|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",i++,temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
+                                        printf("|Name : %s|\t|Phone : %.0lf|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
                                         printf("node:%p\nnext:%p\nprev:%p\n",temp,temp->next,temp->prev);
                                         temp=temp->next;
                                         printf("\n");
                             }
+                            fclose(fp);
                         printf("\nTotal Number of Tickets Booked : %d\nnode:%p\nnext:%p\nprev:%p\n",head->total,head,head->next,head->prev);
                         break;
                 case 2: printf("ENTER THE TICKET ID : ");
                         scanf("%d",&tick_id);
                         while(temp!=head){
                                 if(tick_id==temp->ticket_id){
-                                        printf("|Name : %s|\t|Phone : %d|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
+                                        printf("|Name : %s|\t|Phone : %.0lf|\t|Ticket ID : %d|\n|Movie : %s|\t|Date/Time : %d %s at %.2f|\n|Venue : %s|\t|Seats : %d|\n",temp->name,temp->phone,temp->ticket_id,temp->movie_name,temp->date,temp->day,temp->time+12,temp->place,temp->bookseats);
                                         return;
                                 }
                                 temp=temp->next;
